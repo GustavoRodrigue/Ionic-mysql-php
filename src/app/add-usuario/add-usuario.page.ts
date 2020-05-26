@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-usuario',
@@ -7,9 +8,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddUsuarioPage implements OnInit {
 
-  constructor() { }
+  id: string = "";
+  nome: string = "";
+  usuario: string = "";
+  senha: string = "";
+  nivel: string = "";
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+  usuarios(){
+    this.router.navigate(['/usuarios'])
+  }
+  cadastrar(){
+
+  }
+  editar(){
+
   }
 
 }
