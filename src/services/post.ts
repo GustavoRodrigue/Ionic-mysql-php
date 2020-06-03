@@ -8,7 +8,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 
 export class Post{
-    server: string = 'http://localhost/apiionic';
+    server: string = 'http://localhost/apiionic/';
 
     constructor(private http: HttpClient){
         
