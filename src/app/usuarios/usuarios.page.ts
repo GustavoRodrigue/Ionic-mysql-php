@@ -15,6 +15,7 @@ export class UsuariosPage implements OnInit {
   start : number = 0;
   nome : string = "";
 
+
   constructor(private router: Router, private provider: Post, public toastController: ToastController) { }
 
 
@@ -49,5 +50,23 @@ export class UsuariosPage implements OnInit {
   editar(id, nome, usuario, senha, nivel){
     this.router.navigate(['add-usuario/'+id+'/'+nome + '/' + usuario + '/' + senha + '/' + nivel]);
   }
+
+  mostrar(id, nome, usuario, senha, nivel){
+    this.router.navigate(['mostrar-usuario/'+id+'/'+nome + '/' + usuario + '/' + senha + '/' + nivel]);
+  }
+
+  excluir(id){
+    return new Promise(resolve => {
+      let dados = {
+        requisicao: 'excluir',
+        id: id
+      };
+      this.provider.dadosApi(dados, 'api.php').subscribe(data => {
+        this.ionViewWillEnter();
+       
+      });
+    });
+  }
+  
 
 }
