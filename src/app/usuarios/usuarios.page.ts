@@ -11,9 +11,9 @@ import { ToastController } from '@ionic/angular';
 export class UsuariosPage implements OnInit {
 
   usuarios: any = [];
-  limit : number = 15;
-  start : number = 0;
-  nome : string = "";
+  limit: number = 15;
+  start: number = 0;
+  nome: string = "";
 
 
   constructor(private router: Router, private provider: Post, public toastController: ToastController) { }
@@ -22,40 +22,46 @@ export class UsuariosPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.usuarios = [];
     this.start = 0;
     this.carregar();
   }
 
-  addUsuarios(){
+  addUsuarios() {
     this.router.navigate(['/add-usuario'])
   }
-  carregar(){
+  carregar() {
     return new Promise(resolve => {
+      this.usuarios = [];
       let dados = {
         requisicao: 'listar',
         nome: this.nome,
-        limit : this.limit,
-        start : this.start
+        limit: this.limit,
+        start: this.start
       };
       this.provider.dadosApi(dados, 'api.php').subscribe(data => {
-        for(let usuario of data['result']){
-          this.usuarios.push(usuario);
+        if(data['result'] == '0'){
+          this.ionViewWillEnter();
+        }else{
+          for (let usuario of data['result']) {
+            this.usuarios.push(usuario);
+          }
         }
+        
         resolve(true);
       });
     });
   }
-  editar(id, nome, usuario, senha, nivel){
-    this.router.navigate(['add-usuario/'+id+'/'+nome + '/' + usuario + '/' + senha + '/' + nivel]);
+  editar(id, nome, usuario, senha, nivel) {
+    this.router.navigate(['add-usuario/' + id + '/' + nome + '/' + usuario + '/' + senha + '/' + nivel]);
   }
 
-  mostrar(id, nome, usuario, senha, nivel){
-    this.router.navigate(['mostrar-usuario/'+id+'/'+nome + '/' + usuario + '/' + senha + '/' + nivel]);
+  mostrar(id, nome, usuario, senha, nivel) {
+    this.router.navigate(['mostrar-usuario/' + id + '/' + nome + '/' + usuario + '/' + senha + '/' + nivel]);
   }
 
-  excluir(id){
+  excluir(id) {
     return new Promise(resolve => {
       let dados = {
         requisicao: 'excluir',
@@ -63,10 +69,32 @@ export class UsuariosPage implements OnInit {
       };
       this.provider.dadosApi(dados, 'api.php').subscribe(data => {
         this.ionViewWillEnter();
-       
+
       });
     });
   }
-  
+
+  //atualizar o list view
+  doRefresh(event) {
+
+    setTimeout(() => {
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 500);
+  }
+
+
+  //barra de rolagem
+  loadData(event) {
+
+    this.start += this.limit;
+
+    setTimeout(() => {
+      this.carregar().then(() => {
+        event.target.complete();
+      });
+
+    }, 500);
+  }
 
 }
