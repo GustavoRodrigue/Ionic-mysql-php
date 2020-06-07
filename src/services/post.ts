@@ -8,7 +8,9 @@ import 'rxjs/add/operator/map';
 @Injectable()
 
 export class Post{
-    server: string = 'http://localhost/apiionic/';
+   server: string = 'http://localhost/apiionic/';
+
+    //server: string = 'http://portal.hugocursos.com.br/api/';
 
     constructor(private http: HttpClient){
         
